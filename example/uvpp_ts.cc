@@ -13,12 +13,12 @@ public:
     m_server.bind("0.0.0.0", port);
   }
 
-  void AfterRead(const char* buf, ssize_t len)
+  void AfterRead(int clinetid, const char* buf, ssize_t len)
   {
     if(len < 0)
       return;
     std::cout << "After Read\n";
-    m_clients[333]->write(buf, len, std::bind(&TcpEchoServer::AfterWrite, this, std::placeholders::_1));
+    m_clients[clientid]->write(buf, len, std::bind(&TcpEchoServer::AfterWrite, this, std::placeholders::_1));
   }
   
   void AfterWrite(uvpp::error err)
@@ -34,10 +34,10 @@ public:
     if(err)
       return;
     std::cout << "On new connect\n";
-    uvpp::Tcp* sp_client(new uvpp::Tcp);
-    m_server.accept(*sp_client);
-    m_clients.insert(std::pair<uint32_t, uvpp::Tcp*>(333, sp_client));
-    sp_client->template read_start<0>(std::bind(&TcpEchoServer::AfterRead, this, std::placeholders::_1, std::placeholders::_2));
+    m_client.emplace_back(new uvpp::Tcp);
+    m_server.accept(*m_client.rbegin());
+    sp_client->template read_start<0>(std::bind(&TcpEchoServer::AfterRead, this, m_cnt, std::placeholders::_1, std::placeholders::_2));
+    ++m_cnt;
   }
   
   void StartListen()
@@ -48,7 +48,7 @@ public:
 private:
     uvpp::Tcp m_server;
     size_t    m_cnt;
-    std::map<uint32_t, uvpp::Tcp*> m_clients;
+    std::vector<std::unique_ptr<uvpp::Tcp>> m_clients;
 };
 
 int main(int argc, char *argv[])
