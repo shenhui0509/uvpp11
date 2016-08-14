@@ -3,8 +3,8 @@
 - [x] Support arbitary function for uv's callback(member functions, lambda, clojure, bind .etc.)
 - [x] C++ style interfaces, make libuv easy to use
 - [x] A thread pool using std's thread lib
-- [] Some basic networking component
-- [] multi threading for eventloop : since the io loop of libuv is single thread, run mutiple loop on different threads is not thread safe
+- [ ] Some basic networking component
+- [ ] multi threading for eventloop : since the io loop of libuv is single thread, run mutiple loop on different threads is not thread safe
 
 
 example codes:
