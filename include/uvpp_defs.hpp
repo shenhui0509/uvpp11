@@ -30,8 +30,12 @@
   XX(resolve)                       \
   XX(check)                         \
   XX(prepare)                       \
-  XX(process)                       
+  XX(process)
 
 #define UNREACHABLE()               \
-  assert(0)                         
+  assert(0)
+
+#define DISALLOW_COPY_AND_ASSIGN(type) \
+  type(const type&) = delete;           \
+  type& operator=(const type&) = delete
 #endif /* end of include guard: UVPP_DEFS_HPP_ZSV1RDD7 */

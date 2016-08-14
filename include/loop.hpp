@@ -66,15 +66,15 @@ public:
   }
 
   /* start loop, use the default macro*/
-  bool run()
+  error run()
   {
-    return uv_run(m_uv_loop.get(), UV_RUN_DEFAULT) == 0;
+    return error(uv_run(m_uv_loop.get(), UV_RUN_DEFAULT));
   }
-  
+
   /* polls for new events without blocking*/
-  bool run_once()
+  error run_once()
   {
-    return uv_run(m_uv_loop.get(), UV_RUN_ONCE) == 0;
+    return error(uv_run(m_uv_loop.get(), UV_RUN_ONCE));
   }
 
   /* wrap for functions for uv_loop_t*/
